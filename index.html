@@ -1,9 +1,37 @@
 <html>
   <head>
-    <title>Simple example</title>
-    <script type="text/javascript" src="./tick42-glue.min.js"></script>
+    <title>Simple Glue42 launch example</title>
+    <script type="text/javascript" src="./lib/tick42-glue.min.js"></script>
+    <script>
+      Glue().then((glue) => {
+        window.glue = glue;
+      });
+
+      function launchWindows() {
+        var launchGlue42Promise = glue.windows.open('glue42Tab', 'https://www.glue42.com/', {
+          mode: 'tab',
+          tabGroupId: "dynamicTabGroup",
+          title: 'Glue42',
+          top: 200, left: 800, width: 900, height: 600
+        });
+
+        var launchGooglePromise = glue.windows.open('githubTab', 'https://www.github.com/tick42', {
+          mode: 'tab',
+          tabGroupId: "dynamicTabGroup",
+          title: 'Github',
+          top: 200, left: 800, width: 900, height: 600
+        });
+
+        Promise.all([launchGlue42Promise, launchGooglePromise])
+          .then((windows) => {
+            const result = `Successfully opened windows: window Ids: ${windows[0].id} | ${windows[1].id}`;
+            document.getElementById('result').innerHTML = result;
+          });
+      }
+    </script>
   </head>
   <body>
-    <button>Launch</button>
+    <button onclick="javascript:launchWindows();">Launch</button>
+    <div id="result"></div>
   </body>
 </html>
